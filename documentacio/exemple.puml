@@ -1,0 +1,27 @@
+@startuml
+actor Usuario
+participant "Control: Login" as Login
+participant "Control: ValidarCredenciales" as Validar
+participant "Control: RegistrarAcceso" as Registrar
+database BaseDatos
+
+Usuario -> Login: login(user, pass)
+activate Login
+
+Login -> Validar: validar(user, pass)
+activate Validar
+Validar -> BaseDatos: buscarUsuario(user)
+BaseDatos --> Validar: datosUsuario
+Validar --> Login: resultado
+deactivate Validar
+
+Login -> Registrar: registrar(user, fecha)
+activate Registrar
+Registrar -> BaseDatos: insertarLog(user, fecha)
+Registrar --> Login: ok
+deactivate Registrar
+
+Login --> Usuario: sesionIniciada
+deactivate Login
+
+@enduml

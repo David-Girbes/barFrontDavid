@@ -1,0 +1,53 @@
+@startuml ManegeOrder
+title Gestió d'una Comanda (Boundary-Control-Entity)
+autonumber
+actor Usuari as U
+
+box "Sistem"
+    participant B as "<<boundary>>\nOrderComponent"
+    participant C as "<<control>>\nOrderService"
+    participant E as "<<entity>>\nOrderRepository"
+end box
+
+B -> C: getOrder(orderId)
+activate C
+  C -> E: fetchOrder(orderId)
+  activate E
+    E --> C: null
+  deactivate E
+  C->C : createNewOrder()
+  B->C : getCategories()
+  C->E : fetchCategories()
+  activate E
+    E-->C : categoriesList
+  deactivate E
+  C-->B : categoriesList
+deactivate C
+U->B : select category
+B->C : getProductsByCategory(categoryId)
+activate C
+  C->E : fetchProductsByCategory(categoryId)
+  activate E
+    E-->C : productsList
+  deactivate E
+  C-->B : productsList
+deactivate C
+U->B : select product
+B->C : addProductToOrder(product)
+activate C
+  C->C : addProduct(product)
+  C-->B : updatedOrder
+deactivate C
+U -> B: send order
+B-> C: saveOrder(order)
+activate C
+  C-> E: persistOrder(order)
+  activate E
+    E-->C: persited
+  deactivate E
+  C->C: sendLinesToSections()
+  C-->B: orderSaved
+deactivate C
+
+
+@enduml

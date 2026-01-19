@@ -1,0 +1,29 @@
+@startuml
+title Creació d'una Comanda (Boundary-Control-Entity)
+autonumber
+actor Usuari as U
+
+box "Sistema"
+    participant B as "<<boundary>>\nOrderFormComponent"
+    participant C as "<<control>>\nOrderService"
+    participant E as "<<entity>>\nOrderRepository"
+end box
+
+U -> B: Omplir i Clicar Guardar
+B -> C: crearComanda(data)
+
+activate C
+
+    C -> C:  validarReglesNegoci()
+    C -> E:  guardarComanda(data)
+
+    activate E
+
+    E --> C:  Comanda ID
+    deactivate E
+
+    C --> B:  Retornar Comanda ID
+deactivate C
+
+B --> Usuari: Mostrar Missatge èxit
+@enduml

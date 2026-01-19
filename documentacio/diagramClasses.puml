@@ -1,0 +1,177 @@
+@startuml barAssistant
+
+class CategoryType {
+  - id: number
+  - name: string
+  - description: string
+  - image: string
+}
+
+class Category{
+  - id: number
+  - name: string
+  - description: string
+  - image: string
+}
+class Enterprise{
+  - id: number
+  - name: string
+  - address: string
+  - phone: string
+  - nif: string
+}
+class ProductType{
+  - id: number
+  - name: string
+  - description: string
+  - sellPrice: number
+  - image: string
+  - quantity: number
+}
+class Product{
+  - id: number
+  - name: string
+  - description: string
+  - sellPrice: number
+  - image: string
+  - quantity: number
+}
+class IngredientType{
+  - id: number
+  - name: string
+  - description: string
+  - image: string
+  - quantity:number
+  - customizable: boolean
+}
+class Ingredient{
+  - id: number
+  - name: string
+  - description: string
+  - image: string
+  - quantity:number
+  - customizable: boolean
+}
+class ModifiedIngredient{
+  - id: number
+  - quantity: number
+}
+
+class SectionType{
+  - id: number
+  - name: string
+  - description: string
+}
+Note left of SectionType
+    for example: Bar, Kitchen, Terrace, Waiter
+end note
+
+class Section {
+  - id: number
+  - name: string
+  - description: string
+}
+
+class DeviceType{
+  - id: number
+  - name: string
+  - desription: string
+}
+class Device{
+- id: number
+  - name: string
+  - desription: string
+  - ip:string
+}
+class User {
+  - id: number
+  - name: string
+  - email: string
+  - passwd: string
+}
+
+class Order{
+  - id: number
+  - date: Date
+  - totalPrice: number
+  - status: string
+}
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+}
+class Table{
+  - id: number
+  - name: string
+  - capacity: number
+  - status: TableStatus
+}
+enum OrderLineStatus {
+  SENT
+  PREPARING
+  READY
+  SERVED
+}
+class OrderLine{
+  - id: number
+  - unityPrice: number
+  - quantity: number
+  - status: OrderLineStatus
+  - currentSectionSequence: number
+}
+Note top of OrderLine
+    Must have one line per product
+end note
+
+Class ElaborationSequenceType{
+  - id: number
+  - sectionOrder: number
+}
+Class ElaborationSequence{
+  - id: number
+  - sectionOrder: number
+}
+Note top of ElaborationSequenceType
+    Specify the order of sections in the elaboration process
+end note
+Class ProductType{
+  - id: number
+  - name: string
+  - description: string
+  - sellPrice: number
+  - image: string
+  - quantity:number
+}
+ProductType "1"--"*" ElaborationSequenceType
+Product "1"--"*" ElaborationSequence
+ElaborationSequenceType "*" -- "1" SectionType
+ElaborationSequence "*" -- "1" Section
+Table "*" -- "1" Enterprise
+Section "1"--"*" Device
+SectionType "1"--"*" DeviceType
+
+Product "*" -- "1" Enterprise
+
+
+Order "*" -- "1" Table
+Order "*" -- "1" User
+Order "*" -- "1" Enterprise
+OrderLine "*" -- "1" Order
+OrderLine "1" -- "*" ModifiedIngredient
+ModifiedIngredient "*" -- "1" Ingredient
+OrderLine "*" -- "1" Product
+Enterprise "1" -- "*" Section
+Enterprise "1" -- "*" User
+
+CategoryType "1"--"*" CategoryType
+ProductType "*"--"*" IngredientType
+Product "*" -- "*"  Ingredient
+Product "*" -- "*" Category : pertany
+ProductType "*" -- "*" CategoryType : pertany
+
+Category "*" -- "1" Enterprise
+Ingredient "*" -- "1" Enterprise
+
+
+@enduml

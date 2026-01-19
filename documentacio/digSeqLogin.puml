@@ -1,0 +1,23 @@
+@startuml User Validation
+autonumber
+actor User
+box "Sistem Login"
+participant B as "<<boundary>>\nLoginComponent"
+participant C as "<<control>>\nUserService"
+participant E as "<<entity>>\nUserRepository"
+end box
+
+User-> B: fill credentials
+B->B: FieldsValidation()
+User->B: click login
+B -> C: sendCredentials(credentials)
+activate C
+C -> E: findUserByCredentials(username,password)
+activate E
+E --> C: userEntity
+deactivate E
+C --> B: userEntity
+deactivate C
+
+
+@enduml

@@ -1,0 +1,117 @@
+<app-product-list></app-product-list>
+
+<div class="flex flex-row gap-4">
+  <div>
+    <p-treetable [value]="value1()" [scrollable]="true" [tableStyle]="{'max-width':'20rem'}"
+      (onNodeSelect)="manejarSeleccioNode($event)" selectionMode="single">
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+          <td>
+            <p-treetable-toggler [rowNode]="rowNode" />
+            {{ rowData.name }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-treetable>
+  </div>
+  <div class="flex flex-column gap-4 justify-content-center align-items-center">
+
+    <p-button (click)="moveToRigth($event)"><i class="pi pi-angle-right" pButtonIcon></i></p-button>
+    <p-button><i class="pi pi-angle-double-right" pButtonIcon></i></p-button>
+    <p-button><i class="pi pi-angle-left" pButtonIcon></i></p-button>
+    <p-button><i class="pi pi-angle-double-left" pButtonIcon></i></p-button>
+
+  </div>
+  <div>
+    <p-treetable [value]="value2()" [scrollable]="true" [tableStyle]="{'max-width':'20rem'}"
+      (onNodeSelect)="manejarSeleccioNode($event)" selectionMode="single">
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+          <td>
+            <p-treetable-toggler [rowNode]="rowNode" />
+            {{ rowData.name }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-treetable>
+  </div>
+</div>
+<br>
+<br>
+<div class="card flex flex-col md:flex-row gap-4">
+  <p-tree [value]="value1()" class="flex-1 border border-surface rounded-lg" [droppableNodes]="true"
+    [draggableNodes]="true" draggableScope="first" droppableScope="second"
+    (onNodeDrop)="manejarDropRestringit($event, 'second')">
+    <ng-template let-node pTemplate="default">
+      <div [pDraggable]="node" [draggable]="node.leaf">
+        {{ node.label }}
+      </div>
+    </ng-template>
+    <ng-template #empty> No Items Left </ng-template>
+  </p-tree>
+  <p-tree [value]="value2()" class="flex-1 border border-surface rounded-lg" [draggableNodes]="true"
+    [droppableNodes]="true" draggableScope="second" droppableScope="first"
+    (onNodeDrop)="manejarDropRestringit($event, 'first')">
+    <ng-template let-node pTemplate="default">
+      <div [pDraggable]="node.leaf ? 'first' : undefined">
+        {{ node.label }}
+      </div>
+    </ng-template>
+    <ng-template #empty> No items Right </ng-template>
+  </p-tree>
+</div>
+<p-picklist [source]="categoriesTypeFlattened()" [target]="targetCategoriesFlattened()" [dragdrop]="true"
+  scrollHeight="20rem" (onMoveToTarget)="manejarTransferenciaADreta($event)">
+  <!--(onSelect)="validateTransfer($event)" -->
+  <!--(onTransfer)="validateTransfer($event)"-->
+  <!--(onMoveToTarget)="manejarTransferenciaADreta($event)"-->
+  <!--(onMoveToSource)="manejarTransferenciaAEsquerra($event)"-->
+
+
+  <ng-template let-option let-selected="selected" pTemplate="item">
+
+    <!--<div class="p-2" [ngClass]="{'item-leaf': option.isLeaf, 'item-parent': !option.isLeaf}"
+      (click)="preventParentSelection($event, option.isLeaf)" [pDraggable]="option" [draggable]="option.isLeaf"
+      dragHandle=".drag-handle" dragEffect="move">-->
+
+    <div [style.margin-left.px]="option.level * 20">
+
+      <i class="pi pi-bars mr-2 drag-handle" [ngStyle]="{'cursor': option.isLeaf ? 'grab' : 'default'}"></i>
+
+      <i class="mr-2" [ngClass]="{ 'pi-file': option.isLeaf, 'pi-folder': !option.isLeaf }"></i>
+
+      {{ option.label }}
+    </div>
+    <!--</div>-->
+  </ng-template>
+</p-picklist>
+<div class="card">
+  <p-picklist [source]="categoriesType" [target]="targetCategories" [dragdrop]="true" [responsive]="true"
+    sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name" breakpoint="1400px"
+    scrollHeight="20rem">
+    <ng-template let-option let-selected="selected" #item>
+      <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+        <img class="w-1 h-1 shrink-0 rounded" [src]="option.image" [alt]="option.name" />
+        <div class="flex-1 flex flex-col">
+          <span class="font-medium text-sm">{{ option.name }}</span>
+          <span [ngClass]="{
+                            'text-surface-500': !selected,
+                            'dark:text-surface-400': !selected,
+                            'text-inherit': selected,
+                        }">{{ option.description }}</span>
+        </div>
+        <span class="font-bold sm:ml-8">{{ '$' + option?.sellPrice }}</span>
+      </div>
+    </ng-template>
+  </p-picklist>
+</div>

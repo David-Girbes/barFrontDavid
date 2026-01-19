@@ -1,0 +1,50 @@
+<app-message-box [(message)]="message" [header]="'Error'"></app-message-box>
+<!--<app-message [hidden]="false" [(message)]="message"></app-message>-->
+<div class="flex flex-row gap-4">
+  <div>
+    <p-treetable #tt [filterMode]="'lenient'" [value]="inputData1()" [scrollable]="true"
+      [tableStyle]="{'min-width':'20%'}" (onNodeSelect)="selectNodeLeft($event)" selectionMode="single">
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+        </tr>
+        <tr>
+          <input pInputText [placeholder]="'Filter by name'" type="text"
+            (input)="tt.filter($event.target.value, 'name', 'contains')" />
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+          <td>
+            <p-treetable-toggler [rowNode]="rowNode" />
+            {{ rowData.name }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-treetable>
+  </div>
+  <div class="flex flex-column gap-4 justify-content-center align-items-center">
+    <p-button (click)="moveToRight($event)"><i class="pi pi-angle-right" pButtonIcon></i></p-button>
+    <!--<p-button><i class="pi pi-angle-double-right" pButtonIcon></i></p-button>-->
+    <p-button (click)="moveToLeft($event)"><i class="pi pi-angle-left" pButtonIcon></i></p-button>
+    <!--<p-button><i class="pi pi-angle-double-left" pButtonIcon></i></p-button>-->
+  </div>
+  <div>
+    <p-treetable [value]="modelData2()" [scrollable]="true" [tableStyle]="{'min-width':'20%'}"
+      (onNodeSelect)="selectNodeRight($event)" selectionMode="single">
+      <ng-template #header>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rowNode let-rowData="rowData">
+        <tr [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+          <td>
+            <p-treetable-toggler [rowNode]="rowNode" />
+            {{ rowData.name }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-treetable>
+  </div>
+</div>

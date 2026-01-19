@@ -1,0 +1,10 @@
+<form [formGroup]="profileForm">
+  <div class="flex flex-col gap-2">
+    <label for="email">Email</label>
+    <input pInputText id="email" type="text" formControlName="email" [value]="email()"
+      (input)="onInputChange($event)" />
+    @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+    <p-message severity="error">{{getEmailError()}}</p-message>
+    }
+  </div>
+</form>

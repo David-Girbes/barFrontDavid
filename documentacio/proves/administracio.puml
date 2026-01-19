@@ -1,0 +1,12 @@
+package "📦 Administració" {
+    (Donar d'alta Soci)
+    (Pagar Quota Mensual)
+    (Generar Carnet)
+
+    ' Connexions amb els actors del principal
+    Recepcionista -- (Donar d'alta Soci)
+    Soci -- (Pagar Quota Mensual)
+
+    (Pagar Quota Mensual) -- Bank
+    (Donar d'alta Soci) ..> (Generar Carnet) : <<include>>
+}

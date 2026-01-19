@@ -1,0 +1,10 @@
+<p-dialog header="{{header()}}" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+  <!--<span class="p-text-secondary block mb-8">{{header()}}</span>-->
+  <div class="flex items-center gap-4 mb-4">
+    <label for="username" class="font-semibold w-24">{{message()}}</label>
+  </div>
+  <div class="flex justify-end gap-2">
+    <!--<p-button label="{{labelCancel}}" severity="secondary" (click)="message=''" />-->
+    <p-button label="{{labelAccept()}}" (click)="clickAccept($event)" />
+  </div>
+</p-dialog>

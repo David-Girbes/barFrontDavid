@@ -1,0 +1,18 @@
+[
+  {
+    "id": 2,
+    "name": "Tomato",
+    "description": "A fresh red tomato, perfect for pizzas.",
+    "image": "../../assets/images/tomato.png",
+    "quantity": 5,
+    "customizable": true
+  },
+  {
+    "id": 3,
+    "name": "Cheese",
+    "description": "A block of cheddar cheese, great for pizzas.",
+    "image": "../../assets/images/cheese.png",
+    "quantity": 5,
+    "customizable": true
+  }
+]

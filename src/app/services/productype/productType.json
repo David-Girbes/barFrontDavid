@@ -1,0 +1,70 @@
+[
+  {
+    "id": 1,
+    "name": "Pizza Margarita",
+    "description": "Deliciosa pizza margarita con salsa de tomate, queso mozzarella.",
+    "sellPrice": 12.5,
+    "image": "../../assets/images/pizzaMargherita.png",
+    "quantity": 30,
+    "sectionType": {
+      "id": 1,
+      "name": "Cuina",
+      "description": "Secció dedicada als plats principals i aperitius."
+    },
+    "categoriesType": [
+      {
+        "id": 2,
+        "name": "Pizzas",
+        "description": "Variedad de pizzas ",
+        "image": "/assets/images/pizzas.png"
+      },
+      {
+        "id": 31,
+        "name": "1er Plat",
+        "description": "1er plat",
+        "image": "/assets/images/pizzas.png"
+      }
+    ],
+    "ingredientsType:": [
+      {
+        "id": 2,
+        "name": "Tomato",
+        "description": "A fresh red tomato, perfect for pizzas.",
+        "image": "../../assets/images/tomato.png",
+        "quantity": 5,
+        "customizable": true
+      },
+      {
+        "id": 3,
+        "name": "Cheese",
+        "description": "A block of cheddar cheese, great for pizzas.",
+        "image": "../../assets/images/cheese.png",
+        "quantity": 5,
+        "customizable": true
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Refresco de Cola",
+    "description": "Bebida refrescante de cola servida con hielo y una rodaja de limón.",
+    "sellPrice": 3.0,
+    "image": "../../assets/images/cola.png",
+    "quantity": 100,
+    "sectionType": {
+      "id": 2,
+      "name": "Barra",
+      "description": "Secció dedicada a les begudes i còctels."
+    },
+    "categoriesType": [
+      {
+        "id": 12,
+        "name": "Refrescos",
+        "description": "Bebidas frías y carbonatadas sin alcohol.",
+        "image": "../../assets/images/softDrinks.png",
+        "categoriesType": null
+      }
+    ],
+    "ingredientsType": null
+  }
+]

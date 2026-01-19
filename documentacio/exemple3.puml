@@ -1,0 +1,25 @@
+@startuml
+actor Cliente
+boundary "ProductListComponent" as UI
+control "ProductService" as Service
+database "API REST" as API
+
+Cliente -> UI: acceder a /productos
+activate UI
+
+UI -> Service: getAll()
+activate Service
+
+Service -> API: GET /api/productos
+activate API
+API --> Service: productos[]
+deactivate API
+
+Service --> UI: Observable<Producto[]>
+deactivate Service
+
+UI -> UI: mostrarEnPantalla()
+UI --> Cliente: lista visualizada
+deactivate UI
+
+@enduml

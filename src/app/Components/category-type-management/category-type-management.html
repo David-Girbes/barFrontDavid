@@ -1,0 +1,81 @@
+<p-button (click)="showDialog(1)" label="Add" />
+<p-button (click)="showDialog(2)" icon="pi pi-pencil" label="Modify"/>
+<p-button (click)="delete()" icon="pi pi-trash" label="Delete"/>
+
+<p-dialog maskStyleClass="backdrop-blur-sm" [(visible)]="visible" styleClass="!border-0 !bg-transparent" [modal]="true">
+    <ng-template #headless>
+        <div
+            class="flex flex-col px-8 py-8 gap-6 rounded-2xl"
+            style="border-radius: 12px; background-image: radial-gradient(circle at left top, var(--p-primary-400), var(--p-primary-700))"
+        >
+            <svg
+                width="31"
+                height="33"
+                viewBox="0 0 31 33"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="block mx-auto"
+            >
+                <path
+                    d="..."
+                    fill="var(--p-primary-color)"
+                />
+            </svg>
+            
+            <div class="flex flex-col gap-2 w-full">
+                <label for="name" class="text-primary-50 font-semibold">Name</label>
+                <input
+                    pInputText
+                    id="name"
+                    [(ngModel)]="tempCat.name"
+                    class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-full"
+                    type="text"
+                />
+            </div>
+            <div class="flex flex-col gap-2 w-full">
+                <label for="description" class="text-primary-50 font-semibold">Description</label>
+                <input
+                    pInputText
+                    id="description"
+                    [(ngModel)]="tempCat.description"
+                    class="!bg-white/20 !border-0 !p-4 !text-primary-50 w-full"
+                    type="text"
+                />
+            </div>
+            <div class="flex items-center gap-4">
+                <p-button
+                    label="Cancel"
+                    (click)="closeDialog()"
+                    [text]="true"
+                    styleClass="!p-4 w-full !text-primary-50 !border !border-white/30 hover:!bg-white/10"
+                    class="w-full"
+                />
+                <p-button
+                    [label]="isEditing ? 'Save' : 'Add'"
+                    (click)="isEditing ? modify() : addCategory()"
+                    [text]="true"
+                    styleClass="!p-4 w-full !text-primary-50 !border !border-white/30 hover:!bg-white/10"
+                    class="w-full"
+                />
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>
+
+
+<div class="card flex flex-col md:flex-row gap-4">
+    <p-tree 
+        [selectionMode]="'single'" 
+        [value]="value1()" 
+        [(selection)]="selectedNode"
+        (onNodeSelect)="onNodeSelect($event)"
+        (onNodeDrop)="onNodeDrop($event)"
+        class="flex-1 border border-surface rounded-lg" 
+        [draggableNodes]="true" 
+        [droppableNodes]="true" 
+        draggableScope="self" 
+        droppableScope="self">
+        <ng-template #empty> No Items Left </ng-template>
+    </p-tree>
+</div>
+

@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { InputEmail } from './input-email';
+
+describe('InputUserName', () => {
+  let component: InputEmail;
+  let fixture: ComponentFixture<InputEmail>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [InputEmail]
+    })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(InputEmail);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

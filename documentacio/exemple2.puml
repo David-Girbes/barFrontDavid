@@ -1,0 +1,33 @@
+@startuml
+actor Usuario
+boundary "UI: ProductList" as UI
+control "ProductService" as Service
+entity "Producto" as Prod
+database "Base de Datos" as BD
+
+Usuario -> UI: cargarPagina()
+activate UI
+
+UI -> Service: obtenerTodosProductos()
+activate Service
+
+Service -> BD: SELECT * FROM productos
+activate BD
+BD --> Service: [{id:1, nombre:"Laptop",...}, {id:2,...}]
+deactivate BD
+
+loop para cada dato
+    Service -> Prod: new Producto(dato)
+    activate Prod
+    Prod --> Service: producto
+    deactivate Prod
+end
+
+Service --> UI: listaProductos[]
+deactivate Service
+
+UI -> UI: renderizar(listaProductos)
+UI --> Usuario: mostrarProductos
+deactivate UI
+
+@enduml

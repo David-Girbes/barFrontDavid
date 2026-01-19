@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "Begudes",
+    "description": "",
+    "image": "/assets/images/drinks.png",
+    "categoryTypeParent": null,
+    "subcategoriesType": [
+      {
+        "id": 12,
+        "name": "Refrescos",
+        "description": "Bebidas frías y carbonatadas sin alcohol.",
+        "image": "/assets/images/softDrinks.png",
+        "categoryTypeParent": {
+          "id": 1,
+          "name": "Begudes",
+          "description": "",
+          "image": "/assets/images/drinks.png"
+        },
+        "subcategoriesType": [
+          {
+            "id": 123,
+            "name": "Ligth",
+            "description": "Bebidas frías sin calorias.",
+            "image": "/assets/images/softDrinks.png",
+            "categoryTypeParent": {
+              "id": 12,
+              "name": "Refrescos",
+              "description": "Bebidas frías y carbonatadas sin alcohol.",
+              "image": "/assets/images/softDrinks.png"
+            },
+            "subcategoriesType": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Pizzas",
+    "description": "Variedad de pizzas ",
+    "image": "/assets/images/pizzas.png",
+    "categoryTypeParent": null,
+    "subcategoriesType": []
+  },
+  {
+    "id": 3,
+    "name": "Menu",
+    "description": "Menu del dia",
+    "image": "/assets/images/pizzas.png",
+    "categoryTypeParent": null,
+    "subcategoriesType": [
+      {
+        "id": 31,
+        "name": "1er Plat",
+        "description": "1er plat",
+        "image": "/assets/images/pizzas.png",
+        "categoryTypeParent": {
+          "id": 3,
+          "name": "Menu",
+          "description": "Menu del dia",
+          "image": "/assets/images/pizzas.png"
+        },
+        "subcategoriesType": []
+      }
+    ]
+  }
+]

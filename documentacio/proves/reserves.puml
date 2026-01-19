@@ -1,0 +1,12 @@
+package "📦 Gestió de Reserves" {
+    (Reservar Classe)
+    (Anul·lar Reserva)
+    (Consultar Horaris)
+
+    ' Connexions amb l'actor que declararem al principal
+    Soci -- (Reservar Classe)
+    Soci -- (Anul·lar Reserva)
+    Soci -- (Consultar Horaris)
+
+    (Reservar Classe) ..> (Consultar Horaris) : <<include>>
+}

@@ -1,0 +1,13 @@
+@startuml Gimnas_Modular_Fitxers
+left to right direction
+
+' 1. Declarem els actors globals perquè els paquets els puguin "veure"
+actor Soci
+actor Recepcionista
+actor "Sistema de Pagament" as Bank
+
+' 2. Importem els fitxers externs
+!include reserves.puml
+!include administracio.puml
+
+@enduml

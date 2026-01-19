@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card flex justify-center">
+  </div>
+  <p-table [value]="tableProductsType" stripedrows [responsiveLayout]="'stack'" selectionMode="single"
+    [(selection)]="selectedProductType" (onRowSelect)="reactToProductTypeChange($event)">
+    <ng-template #caption>
+      <div class="flex justify-content-between w-full ">
+        <span class="text-xl font-bold">Products</span>
+        <p-button icon="pi pi-refresh" rounded raised></p-button>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Sell Price</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr [pSelectableRow]="product">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.sellPrice }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<app-pick-table [inputData1]="categoriesTree()" [(modelData2)]="productCategoriesTree" width='30%'></app-pick-table>
