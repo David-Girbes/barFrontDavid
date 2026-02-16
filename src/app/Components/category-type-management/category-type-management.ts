@@ -89,7 +89,7 @@ export class CategoryTypeManagement {
         parentCategoryType: this.tempCat.parentCategoryType
       }
       
-      this.categoryTypeService.modifyCategory(categoryToModify).subscribe({
+      this.categoryTypeService.saveCategory(categoryToModify).subscribe({
         next:(response) => {
           alert("Category modified successfully")
           this.loadCategoryType()
@@ -154,9 +154,9 @@ export class CategoryTypeManagement {
   }
 
 
-  onNodeSelect(event: any) {
-    this.selectedNode = event.node;
-  }
+  // onNodeSelect(event: any) {
+  //   this.selectedNode = event.node.data;
+  // }
 
   onNodeDrop(event: any) {
     console.log('onNodeDrop event:', event);
@@ -164,11 +164,12 @@ export class CategoryTypeManagement {
     const dragNode = event.dragNode as TreeNode<CategoryType>;
     const dropNode = event.dropNode as TreeNode<CategoryType>;
     const dropIndex = event.dropIndex;
-    const accept = event.accept;
     
     console.log('dragNode:', dragNode?.data);
     console.log('dropNode:', dropNode?.data);
     console.log('dropIndex:', dropIndex);
+    console.log('dropNode?.parent:', dropNode?.parent);
+    console.log('dragNode?.parent:', dragNode?.parent);
     
     const draggedCategoryId = dragNode?.data?.id;
     
@@ -177,21 +178,38 @@ export class CategoryTypeManagement {
       return;
     }
     
-    // Determinar el nuevo padre basado en si se soltó sobre un nodo o no
+    // Determinar el nuevo padre
     let newParentId = null;
     
-    // Si dropNode existe y el índice es -1, significa que se soltó DENTRO del nodo (como hijo)
-    // Si dropNode existe y el índice es >= 0, significa que se soltó JUNTO al nodo (como hermano)
-    if (dropNode && dropIndex === -1) {
-      // Se soltó DENTRO de un nodo -> ese nodo es el nuevo padre
+    if (!dropNode) {
+      // No hay nodo de destino → raíz
+      newParentId = null;
+      console.log('Movido a la RAÍZ (sin dropNode)');
+    } else if (dropIndex >= 0) {
+      // dropIndex >= 0 → Se soltó JUNTO al nodo (como hermano)
+      if (dropNode.parent && dropNode.parent.data) {
+        newParentId = dropNode.parent.data.id;
+        console.log('Soltado JUNTO al nodo:', dropNode.data?.name, 'con padre:', dropNode.parent.data.name);
+      } else {
+        // Hermano en la raíz
+        newParentId = null;
+        console.log('Movido a la RAÍZ (hermano de nodo raíz)');
+      }
+    } else if (dropIndex === undefined && !dropNode.parent && dragNode.parent) {
+      // Arrastrar un hijo y soltar sobre nodo raíz → sacar a raíz
+      newParentId = null;
+      console.log('Sacado a la RAÍZ (hijo sobre nodo raíz)');
+    } else if (dropIndex === -1 || (dropIndex === undefined && dropNode.expanded)) {
+      // dropIndex = -1 O (undefined y nodo expandido) → DENTRO del nodo (como hijo)
       newParentId = dropNode.data?.id || null;
-    } else if (dropNode && dropIndex >= 0) {
-      // Se soltó JUNTO a un nodo -> el padre del nodo es el nuevo padre
-      newParentId = dropNode.parent?.data?.id || null;
+      console.log('Soltado DENTRO del nodo:', dropNode.data?.name);
+    } else {
+      // Caso por defecto: dentro del nodo
+      newParentId = dropNode.data?.id || null;
+      console.log('Soltado DENTRO del nodo (caso por defecto):', dropNode.data?.name);
     }
-    // Si dropNode es null, ya es null (se movió a la raíz)
     
-    console.log('newParentId:', newParentId);
+    console.log('newParentId final:', newParentId);
     
     // Actualizar el padre de la categoría arrastrada
     const categoryToUpdate: Partial<CategoryType> = {
@@ -202,7 +220,7 @@ export class CategoryTypeManagement {
       parentCategoryType: newParentId ? { id: newParentId } as CategoryType : null
     };
     
-    this.categoryTypeService.modifyCategory(categoryToUpdate).subscribe({
+    this.categoryTypeService.saveCategory(categoryToUpdate).subscribe({
       next: (response) => {
         console.log('Categoría movida exitosamente');
         this.loadCategoryType();

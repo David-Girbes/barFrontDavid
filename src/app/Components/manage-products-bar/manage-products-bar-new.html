@@ -1,0 +1,195 @@
+<div class="card" style="padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+    <h2 style="color: white; text-align: center; margin-bottom: 2rem; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+        📋 Manage Products & Categories
+    </h2>
+    
+    <div style="display: flex; gap: 3rem; justify-content: space-between; flex-wrap: wrap;">
+        <!-- SECCIÓN DE PLANTILLAS -->
+        <div style="flex: 1; min-width: 600px; background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <h3 style="color: #667eea; margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem;">
+                📚 Templates
+            </h3>
+            
+            <div class="flex gap-4">
+                <div class="card flex-shrink-0" style="width: 300px; background: #f8f9fa; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h4 style="color: #495057; margin-bottom: 0.75rem; font-size: 1rem;">Categories</h4>
+                    <p-tree
+                        [selectionMode]="'single'" 
+                        [value]="value1()" 
+                        [(selection)]="selectedCategoryType"
+                        (onNodeSelect)="onNodeSelect($event)"
+                        class="border border-surface rounded-lg"
+                        style="background: white;">
+                        <ng-template #empty> 
+                            <div style="text-align: center; padding: 2rem; color: #6c757d;">
+                                <i class="pi pi-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                                <p>No categories</p>
+                            </div>
+                        </ng-template>
+                    </p-tree>
+                </div>
+
+                <div class="flex flex-col gap-2 justify-center" style="padding: 0 1rem;">
+                    <p-button 
+                        icon="pi pi-arrow-down" 
+                        [rounded]="true" 
+                        severity="success" 
+                        (click)="moveCategory()"
+                        [style]="{'width': '3rem', 'height': '3rem'}"
+                        pTooltip="Move to bar" 
+                        tooltipPosition="right" />
+                    <p-button 
+                        icon="pi pi-arrow-up" 
+                        [rounded]="true" 
+                        severity="danger" 
+                        (click)="deleteCategory()"
+                        [style]="{'width': '3rem', 'height': '3rem'}"
+                        pTooltip="Delete from bar" 
+                        tooltipPosition="right" />
+                </div>
+
+                <div class="card flex-1" style="background: #f8f9fa; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h4 style="color: #495057; margin-bottom: 0.75rem; font-size: 1rem;">Products</h4>
+                    <p-table
+                        #dt1
+                        [value]="productsType"
+                        dataKey="id"
+                        [rows]="10"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                        [paginator]="true"
+                        [globalFilterFields]="['name','description']"
+                        [(selection)]="selectedProductType"
+                        [selectionMode]="'single'"
+                        [tableStyle]="{'background': 'white', 'border-radius': '8px'}">
+                        <ng-template #caption>
+                            <div class="flex">
+                                <p-iconfield iconPosition="left" class="ml-auto">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text" (input)="dt1.filterGlobal($event.target?.value, 'contains')" placeholder="Search products..." style="border-radius: 20px;" />
+                                </p-iconfield>
+                            </div>
+                        </ng-template>
+                        <ng-template #header>
+                            <tr style="background: #667eea; color: white;">
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-product>
+                            <tr [pSelectableRow]="product">
+                                <td><strong>{{ product.name }}</strong></td>
+                                <td>{{ product.description }}</td>
+                                <td><span style="color: #28a745; font-weight: bold;">{{ product.sellPrice }}</span></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 2rem; color: #6c757d;">
+                                    <i class="pi pi-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                                    <p>No products found</p>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DEL BAR -->
+        <div style="flex: 1; min-width: 600px; background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <h3 style="color: #764ba2; margin-bottom: 1rem; font-size: 1.5rem; border-bottom: 3px solid #764ba2; padding-bottom: 0.5rem;">
+                🍺 Your Bar
+            </h3>
+            
+            <div class="flex gap-4">
+                <div class="card flex-shrink-0" style="width: 300px; background: #f8f9fa; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h4 style="color: #495057; margin-bottom: 0.75rem; font-size: 1rem;">Categories</h4>
+                    <p-tree
+                        [selectionMode]="'single'" 
+                        [value]="value2()" 
+                        [(selection)]="selectedCategory"
+                        (onNodeSelect)="onNodeSelectBar($event)"
+                        class="border border-surface rounded-lg"
+                        style="background: white;">
+                        <ng-template #empty> 
+                            <div style="text-align: center; padding: 2rem; color: #6c757d;">
+                                <i class="pi pi-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                                <p>No categories</p>
+                            </div>
+                        </ng-template>
+                    </p-tree>
+                </div>
+
+                <div class="flex flex-col gap-2 justify-center" style="padding: 0 1rem;">
+                    <p-button 
+                        (click)="moveProduct()" 
+                        icon="pi pi-arrow-down" 
+                        [rounded]="true" 
+                        severity="success"
+                        [style]="{'width': '3rem', 'height': '3rem'}"
+                        pTooltip="Add product" 
+                        tooltipPosition="right" />
+                    <p-button 
+                        (click)="deleteProduct()" 
+                        icon="pi pi-arrow-up" 
+                        [rounded]="true" 
+                        severity="danger"
+                        [style]="{'width': '3rem', 'height': '3rem'}"
+                        pTooltip="Remove product" 
+                        tooltipPosition="right" />
+                </div>
+
+                <div class="card flex-1" style="background: #f8f9fa; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h4 style="color: #495057; margin-bottom: 0.75rem; font-size: 1rem;">Products</h4>
+                    <p-table
+                        #dt2
+                        [value]="products"
+                        dataKey="id"
+                        [rows]="10"
+                        [rowsPerPageOptions]="[10, 25, 50]"
+                        [paginator]="true"
+                        [globalFilterFields]="['name','description']"
+                        [(selection)]="selectedProduct"
+                        [selectionMode]="'single'"
+                        [tableStyle]="{'background': 'white', 'border-radius': '8px'}">
+                        <ng-template #caption>
+                            <div class="flex">
+                                <p-iconfield iconPosition="left" class="ml-auto">
+                                    <p-inputicon>
+                                        <i class="pi pi-search"></i>
+                                    </p-inputicon>
+                                    <input pInputText type="text" (input)="dt2.filterGlobal($event.target?.value, 'contains')" placeholder="Search products..." style="border-radius: 20px;" />
+                                </p-iconfield>
+                            </div>
+                        </ng-template>
+                        <ng-template #header>
+                            <tr style="background: #764ba2; color: white;">
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-product>
+                            <tr [pSelectableRow]="product">
+                                <td><strong>{{ product.name }}</strong></td>
+                                <td>{{ product.description }}</td>
+                                <td><span style="color: #28a745; font-weight: bold;">{{ product.sellPrice }}</span></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 2rem; color: #6c757d;">
+                                    <i class="pi pi-inbox" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;"></i>
+                                    <p>No products found</p>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="card" style="padding: 2rem;">
+    <h3 style="text-align: center; margin-bottom: 1.5rem;">Templates</h3>
+    
+    <!-- SECCIÓN DE PLANTILLAS -->
+    <div class="flex gap-4" style="margin-bottom: 2rem;">
+        <div class="card flex-shrink-0" style="width: 300px;">
+            <p-tree
+                [selectionMode]="'single'" 
+                [value]="value1()" 
+                [(selection)]="selectedCategoryType"
+                (onNodeSelect)="onNodeSelect($event)"
+                class="border border-surface rounded-lg">
+                <ng-template #empty> No Items Left </ng-template>
+            </p-tree>
+        </div>
+
+        <div class="card flex-1">
+            <p-table
+                #dt1
+                [value]="productsType"
+                dataKey="id"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="true"
+                [globalFilterFields]="['name','description']"
+                [(selection)]="selectedProductType"
+                [selectionMode]="'single'">
+                <ng-template #caption>
+                    <div class="flex">
+                        <p-iconfield iconPosition="left" class="ml-auto">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
+                            <input pInputText type="text" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+                        </p-iconfield>
+                    </div>
+                </ng-template>
+                <ng-template #header>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-product>
+                    <tr [pSelectableRow]="product">
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.sellPrice }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                    <tr>
+                        <td colspan="3">No products found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <!-- BOTONES CENTRALES -->
+    <div style="display: flex; justify-content: space-between; margin: 2rem 0; padding: 0 2rem;">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;margin-left: 80px;">
+            <span style="font-size: 0.9rem; color: #666;">Categories</span>
+            <div style="display: flex; gap: 0.5rem;">
+                <p-button icon="pi pi-arrow-down" [rounded]="true" severity="success" (click)="moveCategory()" />
+                <p-button icon="pi pi-arrow-up" [rounded]="true" severity="danger" (click)="deleteCategory()" />
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-right: 200px;">
+            <span style="font-size: 0.9rem; color: #666;">Products</span>
+            <div style="display: flex; gap: 0.5rem;">
+                <p-button icon="pi pi-arrow-down" [rounded]="true" severity="success" (click)="moveProduct()" />
+                <p-button icon="pi pi-arrow-up" [rounded]="true" severity="danger" (click)="deleteProduct()" />
+            </div>
+        </div>
+    </div>
+
+    <h3 style="text-align: center; margin-bottom: 1.5rem;">Your Bar</h3>
+
+    <!-- SECCIÓN DEL BAR -->
+    <div class="flex gap-4">
+        <div class="card flex-shrink-0" style="width: 300px;">
+            <p-tree
+                [selectionMode]="'single'" 
+                [value]="value2()" 
+                [(selection)]="selectedCategory"
+                (onNodeSelect)="onNodeSelectBar($event)"
+                class="border border-surface rounded-lg">
+                <ng-template #empty> No Items Left </ng-template>
+            </p-tree>
+        </div>
+
+        <div class="card flex-1">
+            <p-table
+                #dt2
+                [value]="products"
+                dataKey="id"
+                [rows]="10"
+                [rowsPerPageOptions]="[10, 25, 50]"
+                [paginator]="true"
+                [globalFilterFields]="['name','description']"
+                [(selection)]="selectedProduct"
+                [selectionMode]="'single'">
+                <ng-template #caption>
+                    <div class="flex">
+                        <p-iconfield iconPosition="left" class="ml-auto">
+                            <p-inputicon>
+                                <i class="pi pi-search"></i>
+                            </p-inputicon>
+                            <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+                        </p-iconfield>
+                    </div>
+                </ng-template>
+                <ng-template #header>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-product>
+                    <tr [pSelectableRow]="product">
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.sellPrice }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                    <tr>
+                        <td colspan="3">No products found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+   

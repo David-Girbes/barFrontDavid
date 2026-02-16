@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ItemFlattened } from '../../model/ItemFlattened';
 import { TreeNode } from 'primeng/api';
-import { CategoryType } from '@barassistantshared/entities';
+import { Category, CategoryType, ProductType } from '@barassistantshared/entities';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -30,6 +30,7 @@ export class CategoryTypeService {
   //Agregar una categoria
   saveCategory(categoria: Partial<CategoryType>){
     return this.http.post(environment.apiUrl + "/categoryType",{
+      id:categoria.id,
       name:categoria.name,
       description:categoria.description,
       image:categoria.image,
@@ -38,24 +39,23 @@ export class CategoryTypeService {
     })
   }
 
-  //Modificar una categoria
-  modifyCategory(categoria: Partial<CategoryType>){
-    return this.http.post(environment.apiUrl + "/categoryType",{
-      id:categoria.id,
-      name:categoria.name,
-      description:categoria.description,
-      image:categoria.image,
-      parentCategoryType: categoria.parentCategoryType?.id || null
-    })
-  }
-  
 
   //Borrar una categoria
   deleteCategory(id:any){
     return this.http.delete(environment.apiUrl + "/categoryType/" + id)
   }
 
-
+  getProductsByCategory(id:number):Observable<ProductType[]>{
+    const url = environment.apiUrl + "/productsTypeCategory/" + id
+    console.log(url)
+    return this.http.get<ApiResult<ProductType[]>>(url).pipe(
+      map(res => res.object),
+      catchError(err =>{ 
+        console.log("Error",err);
+        return of([])
+  })
+    )
+  }
 
 
 
@@ -96,6 +96,8 @@ export class CategoryTypeService {
     return node;
   }
 
+   
+
   transformRecursivelyToListTreeNode(data: CategoryType[] | null): TreeNode<CategoryType>[] {
     let nodes: TreeNode<CategoryType>[] = [];
     if (!data || data.length === 0) {
@@ -117,6 +119,8 @@ export class CategoryTypeService {
     }
     return nodes;
   }
+
+  
 
   formateCategoryToSubcategories(data: CategoryType[] | null) {
     const categories: CategoryType[] = []
