@@ -1,0 +1,41 @@
+@startuml CategoryTypeManagement
+title Agregar Nueva CategoryType (Boundary-Control-Entity)
+
+autonumber
+actor Administrador as Admin
+
+box "Sistema"
+    participant B as "<<boundary>>\nCategoryTypeManagement"
+    participant C as "<<control>>\nCategoryTypeService"
+    participant E as "<<entity>>\nAPI/Backend"
+end box
+
+Admin -> B: Click "Add"
+activate B
+B -> B: showDialog(1)
+B -> B: visible = true
+B -> B: isEditing = false
+B -> B: tempCat = { name:'', description:'', image:'', parentCategoryType:null }
+B --> Admin: Mostrar diálogo vacío
+deactivate B
+
+Admin -> B: Completar formulario (name, description)
+Admin -> B: Click "Add"
+activate B
+B -> B: addCategory()
+B -> B: Validar name.trim()
+B -> B: Crear categoryToSave
+B -> C: saveCategory(categoryToSave)
+activate C
+  C -> E: POST /categoryTypes
+  activate E
+    E --> C: response (category saved)
+  deactivate E
+  C --> B: response
+deactivate C
+B --> Admin: alert("Category saved successfully")
+B -> B: loadCategoryType()
+B -> B: closeDialog()
+deactivate B
+
+@enduml

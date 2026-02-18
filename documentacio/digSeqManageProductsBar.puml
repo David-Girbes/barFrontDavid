@@ -1,0 +1,93 @@
+@startuml ManageProductsBar
+title Mover Categoría de Template a Bar (Boundary-Control-Entity)
+
+autonumber
+actor Administrador as Admin
+
+box "Sistema"
+    participant B as "<<boundary>>\nManageProductsBar"
+    participant C1 as "<<control>>\nCategoryService"
+    participant C2 as "<<control>>\nCategoryTypeService"
+    participant C3 as "<<control>>\nProductService"
+    participant E as "<<entity>>\nAPI/Backend"
+end box
+
+Admin -> B: Seleccionar CategoryType en árbol
+activate B
+B -> B: onNodeSelect(event)
+B -> B: selectedCategoryType = node
+B -> B: loadProductsType()
+B -> C2: getProductsByCategory(categoryTypeId)
+activate C2
+  C2 -> E: GET /categoryTypes/{id}/products
+  activate E
+    E --> C2: productsType[]
+  deactivate E
+  C2 --> B: productsType[]
+deactivate C2
+B --> Admin: Mostrar productos en tabla
+deactivate B
+
+Admin -> B: Click botón "Mover Categoría" (arrow-down)
+activate B
+B -> B: moveCategory()
+B -> B: Validar selectedCategoryType
+B -> B: processCategoryRecursively(categoryType, parentCategory)
+B -> C1: saveCategory(newCategory)
+activate C1
+  C1 -> E: POST /categories
+  activate E
+    E --> C1: savedCategory
+  deactivate E
+  C1 --> B: savedCategory
+deactivate C1
+
+B -> C2: getProductsByCategory(categoryType.id)
+activate C2
+  C2 -> E: GET /categoryTypes/{id}/products
+  activate E
+    E --> C2: productsType[]
+  deactivate E
+  C2 --> B: productsType[]
+deactivate C2
+
+loop Para cada productType
+  B -> B: Crear newProduct
+  B -> C3: saveProduct(newProduct)
+  activate C3
+    C3 -> E: POST /products
+    activate E
+      E --> C3: product saved
+    deactivate E
+    C3 --> B: product saved
+  deactivate C3
+end
+
+loop Para cada subcategoría recursivamente
+  B -> B: processCategoryRecursively(subCategoryType, savedCategory)
+  B -> C1: saveCategory(subcategory)
+  activate C1
+    C1 -> E: POST /categories
+    activate E
+      E --> C1: savedSubcategory
+    deactivate E
+    C1 --> B: savedSubcategory
+  deactivate C1
+end
+
+B -> B: removeCategoryTypeFromView()
+B -> B: loadCategories()
+B -> C1: getCategory()
+activate C1
+  C1 -> E: GET /categories
+  activate E
+    E --> C1: categories[]
+  deactivate E
+  C1 --> B: categories[]
+deactivate C1
+B -> B: value2.set(TreeNode[])
+B --> Admin: alert("Category, subcategories and products moved successfully!")
+B --> Admin: Actualizar árboles
+deactivate B
+
+@enduml

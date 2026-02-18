@@ -1,7 +1,35 @@
-<app-category-type-management></app-category-type-management>
-<br>
-<app-manage-products-bar></app-manage-products-bar>
 
-<router-outlet></router-outlet>
 
+<div class="layout-wrapper">
+
+  <header class="top-bar flex align-items-center">
+    <p-button icon="pi pi-bars" (onClick)="visible.set(true)" [text]="true" severity="secondary" />
+    <span class="logo">BAR ASSISTANT</span>
+    <div class="user-info">
+      <i class="pi pi-user mr-2"></i>
+      <span>Admin</span>
+    </div>
+  </header>
+
+  <p-drawer [(visible)]="visible" header="Menú Principal">
+    <div class="flex flex-column align-items-center">
+      <p-button class="menu-item" (click)="navegar('/categories')">
+        <i class="pi pi-fire"></i> CategoryType
+      </p-button>
+      <p-button class="menu-item" (click)="navegar('/products')">
+        <i class="pi pi-cofffe"></i> Manage Products
+      </p-button>
+      <p-button class="menu-item" (click)="navegar('/ticket')">
+        <i class="pi pi-cofffe"></i> Ticket
+      </p-button>
+      
+    </div>
+  </p-drawer>
+
+  <main class="content-area">
+    <router-outlet></router-outlet>
+
+  </main>
+
+</div>
   
